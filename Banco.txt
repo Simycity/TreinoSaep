@@ -1,0 +1,86 @@
+CREATE DATABASE petDB;
+USE petDB;
+
+-- Users do Sistema
+CREATE TABLE Usuarios(
+	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    Senha VARCHAR(16) UNIQUE NOT NULL,
+    Tipo ENUM("Recepcionista", "Veterinário", "Administrador") NOT NULL
+);
+
+SELECT * FROM Usuarios;
+
+
+-- Tabela de Tutor do pet
+CREATE TABLE Tutor(
+	idTutor INT PRIMARY KEY AUTO_INCREMENT,
+	Nome VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Telefone VARCHAR(20)
+);
+
+SELECT * FROM Tutor;
+
+-- Tabela Paciente
+CREATE TABLE Animal(
+	idAnimal INT PRIMARY KEY AUTO_INCREMENT,
+    Nome VARCHAR(255),
+    Especie VARCHAR(255), -- ESPÉCIE DO ANIMAL
+    Raca VARCHAR(255), -- RAÇA DO ANIMAL
+    idTutor INT NOT NULL, -- Chave Estrangeira (Referencia a tabela de Tutor)
+    FOREIGN KEY (idTutor) REFERENCES Tutor(idTutor)
+);
+
+SELECT * FROM Animal;
+
+-- Tabela de Prontuário
+CREATE TABLE Prontuario(
+	idProntuario INT PRIMARY KEY AUTO_INCREMENT,
+    idAnimal INT NOT NULL UNIQUE, -- Um animal para 1 prontuário & Chave Estrangeira
+    DataCriacao DATETIME NOT NULL,
+    FOREIGN KEY (idAnimal) REFERENCES Animal(idAnimal)
+);
+
+-- Tabela de Procedimentos (consultas/serviços)
+CREATE TABLE Procedimento(
+	idProcedimento INT PRIMARY KEY AUTO_INCREMENT,
+    idProntuario INT NOT NULL, -- Chave Estrangeira
+    idResponsavel INT NOT NULL, -- Executor da consulta/serviço
+	DataOperacao DATETIME NOT NULL,
+    Descricao TEXT,
+    FOREIGN KEY (idProntuario) REFERENCES Prontuario(idProntuario),
+    FOREIGN KEY (idResponsavel) REFERENCES Usuarios(idUsuario)
+);
+
+SELECT * FROM Procedimento;
+
+-- Tabela de Agendamento
+CREATE TABLE Agendamento(
+	idAgendamento INT PRIMARY KEY AUTO_INCREMENT,
+    idAnimal INT NOT NULL, -- Chave Extrangeira
+    idUsuario INT NOT NULL, -- Chave Extrangeira
+    DataHora DATETIME NOT NULL,
+    Status ENUM("CONFIRMADO", "CANCELADO","REALIZADO","PENDENTE") NOT NULL,
+    TipoServico VARCHAR(50),
+	FOREIGN KEY (idAnimal) REFERENCES Animal(idAnimal),
+    FOREIGN KEY (idUsuario) REFERENCES Usuarios(idUsuario)
+);
+
+SELECT * FROM Agendamento;
+
+-- Tabela de Alerta
+CREATE TABLE Alerta(
+	idAlerta INT PRIMARY KEY AUTO_INCREMENT,
+    idAnimal INT NOT NULL, -- Chave Extrangeira
+    idProcedimento INT NOT NULL, -- Chave Estrangeira
+    DataPrevista DATE NOT NULL,
+    DataEmissao DATETIME,
+    Descricao VARCHAR(255),
+    Tipo ENUM("VACINA", "RETORNO", "EXAME") NOT NULL,
+    FOREIGN KEY (idAnimal) REFERENCES Animal(idAnimal),
+    FOREIGN KEY (idProcedimento) REFERENCES Procedimento(idProcedimento)
+);
+
+SELECT * FROM Alerta;
