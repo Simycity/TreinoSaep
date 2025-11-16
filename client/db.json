@@ -1,0 +1,40 @@
+{
+    "usuarios": [
+        {
+            "id": "",
+            "nome": "",
+            "email":"",
+            "senha":"",
+            "tipo":"",
+            "cargo":"",
+            "imagemUrl":""
+        },
+        {
+            "id":"",
+            "nome":"",
+            "email":"",
+            "senha":"",
+            "tipo":"",
+            "cargo":"",
+            "imagemUrl": ""
+        },
+        {
+            "id": "",
+            "nome":"",
+            "email":"",
+            "senha":"",
+            "tipo":"",
+            "cargo":"",
+            "imagemUrl": ""
+        },
+        {
+            "id": "",
+            "nome": "",
+            "email": "",
+            "senha": "",
+            "tipo": "",
+            "cargo": "",
+            "imagemUrl": ""
+        }
+    ]
+}
